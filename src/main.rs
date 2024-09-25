@@ -1,3 +1,11 @@
+/*A BTreeMap implementation
+ * the data structure is commonly used in database building
+ * to optomize query searching nistead of a normal HashMap as used in std::collections::HashMap;
+ * BTreeMap store the key Values in sorted order
+ *For more reference check out std:collections::BTreeMap;
+ * September 25, 2024
+ */
+
 #[derive(Debug, Clone)]
 struct BTreeNode<K, V> {
     keys: Vec<K>,
@@ -99,6 +107,7 @@ impl<K: Ord + Clone, V: Clone> BTreeMap<K, V> {
             .and_then(|node| self.search_in_node(node, key))
     }
 
+    /*use recursion to search the node tree*/
     fn search_in_node<'a>(&self, node: &'a BTreeNode<K, V>, key: &K) -> Option<&'a V> {
         let pos = node
             .keys
@@ -110,6 +119,7 @@ impl<K: Ord + Clone, V: Clone> BTreeMap<K, V> {
             return Some(&node.values[pos]);
         }
 
+        /*if we get to this point  and the node is leaf, then key does not exist in the tree*/
         if node.is_leaf {
             None
         } else {
@@ -121,6 +131,7 @@ impl<K: Ord + Clone, V: Clone> BTreeMap<K, V> {
 }
 
 fn main() {
+    /*test samples*/
     let mut btree = BTreeMap::new(2); // Minimum degree of 2
     btree.insert(10, "Ten");
     btree.insert(20, "Twenty");
